@@ -1,0 +1,6 @@
+{
+  "name": "Corda",
+  "description": "The Operating System for Authority Growth. Analyze competitors, discover publisher opportunities, generate AI-powered PR strategies, and launch campaigns.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
