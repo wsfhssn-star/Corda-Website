@@ -38,6 +38,26 @@ import {
 
 type TabType = 'intelligence' | 'discovery' | 'marketplace' | 'ai-strategy' | 'campaigns' | 'reports';
 
+const createStaggerFloatVariants = (index: number) => ({
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: [0, -4, 0],
+    transition: {
+      y: {
+        repeat: Infinity,
+        duration: 4 + (index % 3) * 0.6,
+        ease: "easeInOut",
+        delay: index * 0.12 + 0.5,
+      },
+      opacity: {
+        duration: 0.4,
+        delay: index * 0.08
+      }
+    }
+  }
+});
+
 export default function DashboardShowcase() {
   const [activeTab, setActiveTab] = useState<TabType>('intelligence');
   
@@ -53,6 +73,16 @@ export default function DashboardShowcase() {
   const [aiNiche, setAiNiche] = useState('Enterprise Cloud Security');
   const [isGeneratingStrategy, setIsGeneratingStrategy] = useState(false);
   const [generatedStrategy, setGeneratedStrategy] = useState<PRStrategy | null>(initialStrategies[0]);
+
+  // System Health live monitoring states
+  const [isHealthOpen, setIsHealthOpen] = useState(false);
+  const [isReverifying, setIsReverifying] = useState(false);
+  const [nodes, setNodes] = useState([
+    { name: 'AI Core-Alpha', status: 'Optimal', latency: 12, load: '24%' },
+    { name: 'AI Synapse-Beta', status: 'Optimal', latency: 15, load: '18%' },
+    { name: 'PR Newswire API', status: 'Connected', latency: 45, load: 'Active' },
+    { name: 'Media Intercept Gateway', status: 'Connected', latency: 32, load: 'Idle' },
+  ]);
 
   // Handle adding competitor
   const handleAddCompetitor = (e: React.FormEvent) => {
@@ -140,6 +170,36 @@ export default function DashboardShowcase() {
       setGeneratedStrategy(newStrategy);
       setIsGeneratingStrategy(false);
     }, 1500);
+  };
+
+  // Live telemetry updater for System Health Nodes
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setNodes(prev => prev.map(node => {
+        const delta = Math.floor(Math.random() * 5) - 2; // -2 to +2
+        const newLatency = Math.max(8, node.latency + delta);
+        let newLoad = node.load;
+        if (node.load.endsWith('%')) {
+          const currentPercent = parseInt(node.load);
+          const loadDelta = Math.floor(Math.random() * 7) - 3;
+          newLoad = `${Math.min(95, Math.max(10, currentPercent + loadDelta))}%`;
+        }
+        return { ...node, latency: newLatency, load: newLoad };
+      }));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleReverify = () => {
+    setIsReverifying(true);
+    setTimeout(() => {
+      setIsReverifying(false);
+      // Slightly improve latencies on re-verify to show live effect
+      setNodes(prev => prev.map(node => ({
+        ...node,
+        latency: Math.max(6, Math.floor(node.latency * 0.85))
+      })));
+    }, 1200);
   };
 
   const tabsList = [
@@ -269,7 +329,7 @@ export default function DashboardShowcase() {
             </div>
 
             {/* Right Column Workspace - Rich Panels Area (Col Span 9) */}
-            <div className="lg:col-span-9 bg-slate-50/30 p-6 sm:p-8 flex flex-col">
+            <div className="lg:col-span-9 bg-slate-50/30 p-6 sm:p-8 flex flex-col relative">
               
               <AnimatePresence mode="wait">
                 <motion.div
@@ -384,8 +444,15 @@ export default function DashboardShowcase() {
                         </div>
 
                         <div className="divide-y divide-slate-100">
-                          {publishersData.slice(0, 4).map((pub) => (
-                            <div key={pub.id} className="p-5 flex flex-wrap items-center justify-between gap-4 hover:bg-slate-50/50 transition-colors">
+                          {publishersData.slice(0, 4).map((pub, idx) => (
+                            <motion.div 
+                              key={pub.id} 
+                              variants={createStaggerFloatVariants(idx)}
+                              initial="hidden"
+                              animate="visible"
+                              whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+                              className="p-5 flex flex-wrap items-center justify-between gap-4 hover:bg-slate-50/50 transition-colors"
+                            >
                               <div className="flex items-start gap-4">
                                 <div className="p-2.5 rounded-xl bg-orange-50 text-brand-orange">
                                   <Globe className="w-4.5 h-4.5" />
@@ -418,7 +485,7 @@ export default function DashboardShowcase() {
                                   </button>
                                 </div>
                               </div>
-                            </div>
+                            </motion.div>
                           ))}
                         </div>
                       </div>
@@ -439,9 +506,13 @@ export default function DashboardShowcase() {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {publishersData.map((pub) => (
-                          <div 
+                        {publishersData.map((pub, idx) => (
+                          <motion.div 
                             key={pub.id} 
+                            variants={createStaggerFloatVariants(idx)}
+                            initial="hidden"
+                            animate="visible"
+                            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                             className="bg-white border border-slate-100 rounded-2xl p-5 hover:border-brand-orange/40 transition-all duration-300 shadow-sm flex flex-col justify-between"
                           >
                             <div>
@@ -470,7 +541,7 @@ export default function DashboardShowcase() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
@@ -602,8 +673,15 @@ export default function DashboardShowcase() {
                       </div>
 
                       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden divide-y divide-slate-100">
-                        {campaigns.map((camp) => (
-                          <div key={camp.id} className="p-5 flex flex-wrap items-center justify-between gap-6 hover:bg-slate-50/50 transition-colors">
+                        {campaigns.map((camp, idx) => (
+                          <motion.div 
+                            key={camp.id} 
+                            variants={createStaggerFloatVariants(idx)}
+                            initial="hidden"
+                            animate="visible"
+                            whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+                            className="p-5 flex flex-wrap items-center justify-between gap-6 hover:bg-slate-50/50 transition-colors"
+                          >
                             <div className="space-y-1.5 max-w-sm">
                               <div className="flex items-center gap-2">
                                 <span className="font-semibold text-brand-dark text-xs sm:text-sm">{camp.name}</span>
@@ -644,7 +722,7 @@ export default function DashboardShowcase() {
                                 {camp.status}
                               </span>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
@@ -750,6 +828,99 @@ export default function DashboardShowcase() {
 
                 </motion.div>
               </AnimatePresence>
+
+              {/* Floating System Health status widget */}
+              <div className="absolute bottom-4 right-4 z-40">
+                <AnimatePresence mode="wait">
+                  {!isHealthOpen ? (
+                    <motion.button
+                      key="closed-health"
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                      onClick={() => setIsHealthOpen(true)}
+                      className="bg-[#0f172a] hover:bg-[#1e293b] border border-slate-800 text-white rounded-full px-4 py-2.5 shadow-xl flex items-center gap-2.5 cursor-pointer hover:border-orange-500/30 transition-all duration-300 group font-mono"
+                    >
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <span className="text-[11px] font-mono font-bold tracking-wider uppercase">System Health: Optimal</span>
+                      <span className="text-[10px] text-slate-400 font-mono bg-slate-800 px-1.5 py-0.5 rounded group-hover:text-brand-orange transition-colors">
+                        12ms
+                      </span>
+                    </motion.button>
+                  ) : (
+                    <motion.div
+                      key="opened-health"
+                      initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                      className="bg-[#0f172a]/95 backdrop-blur-md border border-slate-800 text-white rounded-2xl p-4 shadow-2xl w-72 sm:w-80 flex flex-col gap-3 font-mono"
+                    >
+                      {/* Widget Header */}
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider">Corda Core Health</span>
+                        </div>
+                        <button
+                          onClick={() => setIsHealthOpen(false)}
+                          className="text-slate-400 hover:text-white text-[10px] font-mono hover:bg-slate-800 px-1.5 py-0.5 rounded transition-all cursor-pointer"
+                        >
+                          Minimize
+                        </button>
+                      </div>
+
+                      {/* Nodes List */}
+                      <div className="space-y-2">
+                        {nodes.map((node) => (
+                          <div key={node.name} className="flex items-center justify-between text-xs font-mono">
+                            <div className="flex items-center gap-2 text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              <span>{node.name}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-[10px] text-brand-orange">{node.latency}ms</span>
+                              <span className="text-[10px] text-slate-500 bg-slate-900/50 px-1.5 py-0.5 rounded w-12 text-right">
+                                {node.load}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Network integrity */}
+                      <div className="border-t border-slate-800 pt-2.5 mt-1">
+                        <div className="flex justify-between text-[9px] font-mono text-slate-400 uppercase tracking-wider mb-1">
+                          <span>Network Integrity</span>
+                          <span className="text-emerald-400 font-bold">99.98%</span>
+                        </div>
+                        <div className="w-full bg-slate-950 h-1 rounded-full overflow-hidden">
+                          <div className="bg-gradient-to-r from-brand-orange to-emerald-400 h-full rounded-full w-[99.98%]" />
+                        </div>
+                      </div>
+
+                      {/* Action trigger */}
+                      <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-800/50">
+                        <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">RSA-256 SECURED</span>
+                        <button
+                          type="button"
+                          onClick={handleReverify}
+                          disabled={isReverifying}
+                          className="text-[10px] font-mono text-slate-300 hover:text-white hover:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-800 flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          <RefreshCw className={`w-3 h-3 ${isReverifying ? 'animate-spin text-brand-orange' : ''}`} />
+                          <span>{isReverifying ? 'Syncing...' : 'Re-verify API'}</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
             </div>
 

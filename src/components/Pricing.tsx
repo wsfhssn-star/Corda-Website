@@ -1,10 +1,34 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Check, ShieldCheck, HelpCircle, ArrowRight, Sparkles, TrendingUp, DollarSign } from 'lucide-react';
+import { Check, ShieldCheck, HelpCircle, ArrowRight, Sparkles, TrendingUp, DollarSign, ChevronDown } from 'lucide-react';
 
 export default function Pricing() {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('annual');
   const [budgetSlider, setBudgetSlider] = useState<number>(2000); // Default $2000/mo budget calculator
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "How does Corda's direct placement model differ from traditional agencies?",
+      answer: "Legacy agencies operate as expensive middlemen, marking up placement costs by 200–500% with zero transparency. Corda is a decoupled direct platform that connects you directly to verified publisher networks. You get real-time price matching, direct editorial access, and automated status telemetry with zero agency markup."
+    },
+    {
+      question: "What is the secure escrow protection layer?",
+      answer: "When you fund a campaign, your budget is held securely in our protected ledger. Funds are only authorized and released to publishers automatically after our platform crawlers verify that your content has been successfully published with the exact parameters and anchor text you approved."
+    },
+    {
+      question: "Can I adjust my monthly placement budget or pause at any time?",
+      answer: "Absolutely. Corda has no lock-in contracts or agency retainers. You can scale your direct placement budget up or down dynamically using our campaign configurer, change plans, or pause your execution at any moment with a single click."
+    },
+    {
+      question: "How are the publisher metrics (DA, Traffic, and TAT) verified?",
+      answer: "We pull live domain authority metrics and traffic indices directly from leading enterprise search intelligence APIs daily. Additionally, our system calculates actual average turnaround times (TAT) based on active publisher response metrics to guarantee completely accurate marketplace data."
+    },
+    {
+      question: "How does the AI PR Strategy Insights generator work?",
+      answer: "Corda's proprietary LLM engine analyzes your brand domain, active competitor authority gaps, and publisher guidelines. It then instantly drafts high-converting editorial pitches, custom hook angles, and optimal anchor text selections to maximize the domain authority transfer."
+    }
+  ];
 
   const discountFactor = billingPeriod === 'annual' ? 0.8 : 1.0;
 
@@ -274,6 +298,92 @@ export default function Pricing() {
 
           </div>
         </motion.div>
+
+        {/* Elegant Animated FAQ Accordion Section */}
+        <div className="mt-24 sm:mt-32 border-t border-slate-100 pt-20">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-100 text-brand-dark text-xs font-semibold tracking-wider uppercase mb-5"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-brand-orange" />
+              Common Queries
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-brand-dark"
+            >
+              Frequently Asked Questions
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-sm text-brand-muted mt-4 font-sans max-w-2xl mx-auto leading-relaxed"
+            >
+              Everything you need to know about Corda's direct placement ecosystem, escrow ledger protection, and scaling mechanics.
+            </motion.p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className={`border rounded-2xl bg-white transition-all duration-300 ${
+                    isOpen 
+                      ? 'border-brand-orange/40 shadow-xl shadow-orange-500/5 ring-1 ring-brand-orange/10' 
+                      : 'border-slate-100 hover:border-slate-200 hover:shadow-lg hover:shadow-slate-100/50'
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full flex items-center justify-between text-left px-6 py-5 focus:outline-none group cursor-pointer"
+                  >
+                    <span className="font-display font-bold text-sm sm:text-base text-brand-dark group-hover:text-brand-orange transition-colors pr-4">
+                      {faq.question}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className={`p-1.5 rounded-lg shrink-0 ${
+                        isOpen ? 'bg-orange-50 text-brand-orange' : 'bg-slate-50 text-slate-400 group-hover:text-brand-dark group-hover:bg-slate-100'
+                      }`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </button>
+
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      height: isOpen ? "auto" : 0,
+                      opacity: isOpen ? 1 : 0
+                    }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-6 pb-5 text-xs sm:text-sm text-brand-muted leading-relaxed font-sans border-t border-slate-50 pt-3">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
 
       </div>
     </section>

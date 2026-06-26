@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
 import { 
   Compass, 
   Search, 
@@ -22,6 +22,13 @@ import {
 export default function Navigation() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
 
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id);
@@ -46,6 +53,13 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
+      {/* Slim, elegant scroll-progress indicator */}
+      <motion.div 
+        id="scroll-progress-indicator"
+        className="absolute bottom-[-1.5px] left-0 right-0 h-[2.5px] bg-gradient-to-r from-brand-orange to-orange-400 origin-[0%] z-50"
+        style={{ scaleX }}
+      />
+
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex items-center justify-between h-20">
           

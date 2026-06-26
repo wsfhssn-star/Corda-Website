@@ -6,7 +6,9 @@
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import PillarsDetails from './components/PillarsDetails';
+import ExplainerVideo from './components/ExplainerVideo';
 import DashboardShowcase from './components/DashboardShowcase';
+import AICampaignGenerator from './components/AICampaignGenerator';
 import NetworkTopology from './components/NetworkTopology';
 import Testimonials from './components/Testimonials';
 import Pricing from './components/Pricing';
@@ -26,8 +28,14 @@ export default function App() {
         {/* Suite Decoupled Architecture / Pillars Details */}
         <PillarsDetails />
 
+        {/* Premium Animated Explainer Video Section */}
+        <ExplainerVideo />
+
         {/* Complete Interactive Sandbox Dashboard Showcase */}
         <DashboardShowcase />
+
+        {/* AI Campaign Generator Section */}
+        <AICampaignGenerator />
 
         {/* Dynamic Topology Node Inspector Vector Field */}
         <NetworkTopology />
