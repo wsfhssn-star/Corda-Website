@@ -314,26 +314,34 @@ export default function NetworkTopology() {
                         className="transition-all duration-300"
                       />
 
-                      {/* Moving glowing energy beads */}
-                      {conn.isIncoming ? (
-                        // Incoming pulses from publishers flow to center target
-                        <circle r="3.5" fill={conn.color} className="filter drop-shadow-[0_0_3px_rgba(16,185,129,0.8)]">
-                          <animateMotion
-                            path={pathData}
-                            dur="4.5s"
-                            repeatCount="indefinite"
-                          />
-                        </circle>
-                      ) : (
-                        // Outcoming dashed signals flow towards competitors
-                        <circle r="3.5" fill={conn.color} className="filter drop-shadow-[0_0_3px_rgba(239,68,68,0.8)]">
-                          <animateMotion
-                            path={pathData}
-                            dur="5.5s"
-                            repeatCount="indefinite"
-                          />
-                        </circle>
-                      )}
+                      {/* Moving glowing energy beads with advanced motion trails */}
+                      {[0, 1, 2, 3].map((idx) => {
+                        const delay = idx * 0.24; // clean spacing offset
+                        const size = idx === 0 ? 4 : idx === 1 ? 2.8 : idx === 2 ? 1.8 : 1.2;
+                        const opacity = idx === 0 ? 1.0 : idx === 1 ? 0.7 : idx === 2 ? 0.4 : 0.15;
+                        const glowColor = conn.isIncoming ? 'rgba(16,185,129,0.8)' : 'rgba(239,68,68,0.8)';
+                        const duration = conn.isIncoming ? "4s" : "5s";
+
+                        return (
+                          <circle
+                            key={`${conn.id}-bead-${idx}`}
+                            r={size}
+                            fill={conn.color}
+                            opacity={isSelectedConnection ? opacity : isHoveredConnection ? opacity * 0.8 : opacity * 0.3}
+                            className="transition-all duration-300"
+                            style={{
+                              filter: idx === 0 ? `drop-shadow(0 0 4px ${glowColor})` : 'none'
+                            }}
+                          >
+                            <animateMotion
+                              path={pathData}
+                              dur={duration}
+                              begin={`${delay}s`}
+                              repeatCount="indefinite"
+                            />
+                          </circle>
+                        );
+                      })}
                     </g>
                   );
                 })}
@@ -352,6 +360,61 @@ export default function NetworkTopology() {
                       onMouseEnter={() => setHoveredNodeId(node.id)}
                       onMouseLeave={() => setHoveredNodeId(null)}
                     >
+                      {/* Active Expanding Ripple Wave / Sonar effect */}
+                      {(isSelected || isHovered) && (
+                        <motion.circle
+                          r={node.type === 'target' ? 30 : 22}
+                          fill="none"
+                          stroke={node.color}
+                          strokeWidth="1"
+                          initial={{ scale: 1, opacity: 0.8 }}
+                          animate={{ scale: 1.6, opacity: 0 }}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 2.2,
+                            ease: "easeOut",
+                          }}
+                        />
+                      )}
+
+                      {/* Orbiting data particles around active nodes */}
+                      {(isSelected || isHovered) && (
+                        <>
+                          {[0, 1, 2].map((pIdx) => {
+                            const angle = (pIdx * 360) / 3;
+                            const orbitRadius = node.type === 'target' ? 42 : 33;
+                            return (
+                              <motion.circle
+                                key={`${node.id}-orbit-${pIdx}`}
+                                r="2"
+                                fill={node.color}
+                                animate={{
+                                  cx: [
+                                    Math.cos((angle * Math.PI) / 180) * orbitRadius,
+                                    Math.cos(((angle + 120) * Math.PI) / 180) * orbitRadius,
+                                    Math.cos(((angle + 240) * Math.PI) / 180) * orbitRadius,
+                                    Math.cos(((angle + 360) * Math.PI) / 180) * orbitRadius,
+                                  ],
+                                  cy: [
+                                    Math.sin((angle * Math.PI) / 180) * orbitRadius,
+                                    Math.sin(((angle + 120) * Math.PI) / 180) * orbitRadius,
+                                    Math.sin(((angle + 240) * Math.PI) / 180) * orbitRadius,
+                                    Math.sin(((angle + 360) * Math.PI) / 180) * orbitRadius,
+                                  ],
+                                  scale: [0.8, 1.2, 0.8],
+                                  opacity: [0.3, 0.9, 0.3],
+                                }}
+                                transition={{
+                                  repeat: Infinity,
+                                  duration: 6,
+                                  ease: "linear",
+                                }}
+                              />
+                            );
+                          })}
+                        </>
+                      )}
+
                       {/* Spinning outer dash ring */}
                       <circle
                         r={node.type === 'target' ? 36 : 28}

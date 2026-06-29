@@ -338,55 +338,141 @@ export default function ExplainerVideo() {
             </div>
 
             {/* ── CHAPTER VISUAL STAGES WITH CONNECTED MORPHING MOTION ── */}
-            <div className="flex-1 flex items-center justify-center relative my-4 sm:my-6 z-10">
+            <div className="flex-1 flex items-center justify-center relative my-4 sm:my-6 z-10 min-h-[300px]">
               <AnimatePresence mode="wait">
                 
                 {/* STAGE 1: ANALYZE */}
                 {activeStep.id === 'analyze' && (
                   <motion.div
                     key="analyze"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)] relative"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-lg bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-8 shadow-[0_32px_64px_rgba(15,23,42,0.04)] relative overflow-hidden"
                   >
-                    <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white shadow-lg animate-bounce">
-                      <Cpu className="w-4 h-4" />
+                    {/* Glowing background halo */}
+                    <div className="absolute -top-12 -left-12 w-40 h-40 bg-orange-200/20 rounded-full blur-2xl pointer-events-none" />
+
+                    <div className="absolute top-4 right-4 flex gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping" />
+                      <span className="text-[10px] font-mono font-bold text-orange-600 uppercase bg-orange-50 px-2 py-0.5 rounded-full">
+                        Scan Active
+                      </span>
                     </div>
 
-                    <div className="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
-                      <div className="w-10 h-10 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-500">
-                        <Globe className="w-5 h-5" />
+                    <div className="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100/80">
+                      <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500 relative shrink-0">
+                        <Globe className="w-6 h-6 animate-spin" style={{ animationDuration: '15s' }} />
+                        <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-orange-500 text-white rounded-full flex items-center justify-center text-[8px] font-bold">
+                          1
+                        </span>
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">Scanning Asset</span>
-                        <h4 className="text-sm font-display font-extrabold text-brand-navy">my-brand-startup.io</h4>
+                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-extrabold">System Target Ingestion</span>
+                        <h4 className="text-base font-display font-extrabold text-brand-navy flex items-center gap-2">
+                          <span>my-brand-startup.io</span>
+                          <span className="text-xs font-mono font-medium text-slate-400">(Your Domain)</span>
+                        </h4>
                       </div>
                     </div>
 
-                    <div className="space-y-4">
-                      {/* Scanning Ring Simulation */}
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 relative overflow-hidden">
-                        <div className="absolute top-0 bottom-0 left-0 bg-orange-500/5 animate-[pulse_1.5s_infinite] w-full" />
-                        <span className="text-xs font-mono font-bold text-slate-500">Live Domain Authority</span>
-                        <span className="text-sm font-mono font-extrabold text-orange-600">{daScore}/100</span>
+                    {/* Animated Scanning Network Node Graph */}
+                    <div className="relative h-44 border border-slate-100 rounded-2xl bg-slate-50/50 flex items-center justify-center overflow-hidden mb-6">
+                      
+                      {/* Radar sweep lines */}
+                      <motion.div 
+                        className="absolute inset-0 border-r border-orange-500/20 origin-center"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                        style={{
+                          background: 'conic-gradient(from 0deg, transparent 70%, rgba(249,115,22,0.06) 100%)'
+                        }}
+                      />
+
+                      {/* Concentric scan circles */}
+                      <div className="absolute w-24 h-24 rounded-full border border-orange-500/10 flex items-center justify-center">
+                        <div className="absolute w-12 h-12 rounded-full border border-orange-500/15" />
                       </div>
 
-                      {/* Competitor List */}
-                      <div className="space-y-2">
-                        <span className="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider block">Identified Competitors:</span>
-                        
-                        <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-red-50/50 border border-red-100">
-                          <span className="font-mono text-slate-700">market-leader.com</span>
-                          <span className="font-mono font-bold text-red-500">DA 82 (Gap: -70)</span>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-red-50/50 border border-red-100">
-                          <span className="font-mono text-slate-700">heavy-enterprise.co</span>
-                          <span className="font-mono font-bold text-red-500">DA 74 (Gap: -62)</span>
-                        </div>
-                      </div>
+                      {/* Network nodes with SVG connections */}
+                      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                        <motion.line 
+                          x1="50%" y1="50%" x2="22%" y2="28%" 
+                          stroke="#FDA4AF" strokeWidth="1.5" strokeDasharray="4 4"
+                        />
+                        <motion.line 
+                          x1="50%" y1="50%" x2="78%" y2="30%" 
+                          stroke="#FDA4AF" strokeWidth="1.5" strokeDasharray="4 4"
+                        />
+                        {/* Core beam animation */}
+                        <motion.circle r="3" fill="#F97316">
+                          <animateMotion 
+                            path="M 120 70 L 220 88" 
+                            dur="1.8s" repeatCount="indefinite"
+                          />
+                        </motion.circle>
+                        <motion.circle r="3" fill="#F97316">
+                          <animateMotion 
+                            path="M 320 60 L 220 88" 
+                            dur="2.2s" repeatCount="indefinite"
+                          />
+                        </motion.circle>
+                      </svg>
+
+                      {/* Us Node in the center */}
+                      <motion.div 
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: [0.95, 1.05, 0.95] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        className="absolute z-10 w-14 h-14 bg-orange-500 text-white rounded-full flex flex-col items-center justify-center shadow-lg border-2 border-white"
+                      >
+                        <span className="text-[9px] font-mono font-bold leading-none uppercase">DA</span>
+                        <span className="text-sm font-mono font-black">{daScore}</span>
+                      </motion.div>
+
+                      {/* Competitor Node Left */}
+                      <motion.div 
+                        className="absolute left-[16%] top-[20%] z-10 bg-white border-2 border-red-200 p-2 rounded-xl shadow-sm text-center"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <p className="text-[8px] font-mono text-slate-400 font-bold uppercase">competitor-1.com</p>
+                        <p className="text-[11px] font-mono font-black text-red-500">DA 82</p>
+                      </motion.div>
+
+                      {/* Competitor Node Right */}
+                      <motion.div 
+                        className="absolute right-[16%] top-[22%] z-10 bg-white border-2 border-red-200 p-2 rounded-xl shadow-sm text-center"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <p className="text-[8px] font-mono text-slate-400 font-bold uppercase">competitor-2.co</p>
+                        <p className="text-[11px] font-mono font-black text-red-500">DA 74</p>
+                      </motion.div>
+                    </div>
+
+                    {/* Target status rows */}
+                    <div className="space-y-2.5">
+                      <motion.div 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="flex items-center justify-between p-3.5 rounded-xl bg-red-50/50 border border-red-100 text-xs font-mono"
+                      >
+                        <span className="text-slate-600 font-medium">Competitor-1 Backlink Lead</span>
+                        <span className="text-red-600 font-black">238 Linking Domains</span>
+                      </motion.div>
+
+                      <motion.div 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex items-center justify-between p-3.5 rounded-xl bg-orange-50/40 border border-orange-100/60 text-xs font-mono"
+                      >
+                        <span className="text-slate-600 font-medium">Uncovered Authority Gap</span>
+                        <span className="text-orange-600 font-black flex items-center gap-1">
+                          <ShieldAlert className="w-3.5 h-3.5 text-orange-500" /> Critical Deficit
+                        </span>
+                      </motion.div>
                     </div>
                   </motion.div>
                 )}
@@ -395,64 +481,131 @@ export default function ExplainerVideo() {
                 {activeStep.id === 'discover' && (
                   <motion.div
                     key="discover"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-lg grid grid-cols-1 md:grid-cols-2 gap-4"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-6"
                   >
-                    {/* Left: Backlink authority gap chart */}
-                    <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-[0_15px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+                    {/* Left Panel: Domain Gap comparison visualizer with bounce charts */}
+                    <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 shadow-[0_32px_64px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden">
+                      <div className="absolute -bottom-8 -left-8 w-28 h-28 bg-red-100/30 rounded-full blur-xl pointer-events-none" />
+                      
                       <div>
-                        <span className="text-[9px] font-mono text-red-500 font-bold uppercase tracking-wider block mb-1">Gap Detected</span>
-                        <h4 className="text-xs font-display font-extrabold text-brand-navy">Competitive Deficit</h4>
+                        <span className="text-[10px] font-mono text-red-500 font-black uppercase tracking-wider block mb-1">Live competitive delta</span>
+                        <h4 className="text-sm font-display font-extrabold text-brand-navy">Authority Deficit Index</h4>
                       </div>
                       
-                      <div className="my-4 h-24 flex items-end justify-between px-4">
-                        <div className="w-8 flex flex-col items-center gap-1">
-                          <div className="w-full bg-slate-100 rounded-md h-8" />
-                          <span className="text-[9px] font-mono text-slate-400 font-bold">Us</span>
+                      {/* Spring animation column chart */}
+                      <div className="my-6 h-32 flex items-end justify-between px-6 pb-2 border-b border-slate-100">
+                        <div className="w-12 flex flex-col items-center gap-2">
+                          <motion.div 
+                            initial={{ height: 0 }}
+                            animate={{ height: "35%" }}
+                            transition={{ type: "spring", stiffness: 80, damping: 12, delay: 0.1 }}
+                            className="w-full bg-slate-100 border border-slate-200 rounded-t-lg relative"
+                          >
+                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-slate-500">DA {daScore}</span>
+                          </motion.div>
+                          <span className="text-[10px] font-mono text-slate-400 font-bold uppercase">Us</span>
                         </div>
-                        <div className="w-8 flex flex-col items-center gap-1">
-                          <div className="w-full bg-red-400 rounded-md h-24 animate-[pulse_2s_infinite]" />
-                          <span className="text-[9px] font-mono text-red-500 font-bold">L1</span>
+
+                        <div className="w-12 flex flex-col items-center gap-2">
+                          <motion.div 
+                            initial={{ height: 0 }}
+                            animate={{ height: "92%" }}
+                            transition={{ type: "spring", stiffness: 80, damping: 12, delay: 0.2 }}
+                            className="w-full bg-gradient-to-t from-red-400 to-rose-400 border border-red-300 rounded-t-lg relative shadow-md"
+                          >
+                            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:12px_12px] animate-[pulse_2s_infinite]" />
+                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-red-500">DA 82</span>
+                          </motion.div>
+                          <span className="text-[10px] font-mono text-red-400 font-bold uppercase">L1</span>
                         </div>
-                        <div className="w-8 flex flex-col items-center gap-1">
-                          <div className="w-full bg-red-300 rounded-md h-16" />
-                          <span className="text-[9px] font-mono text-slate-400 font-bold">L2</span>
+
+                        <div className="w-12 flex flex-col items-center gap-2">
+                          <motion.div 
+                            initial={{ height: 0 }}
+                            animate={{ height: "78%" }}
+                            transition={{ type: "spring", stiffness: 80, damping: 12, delay: 0.3 }}
+                            className="w-full bg-gradient-to-t from-red-300 to-rose-300 border border-red-200 rounded-t-lg relative shadow-sm"
+                          >
+                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-slate-500">DA 74</span>
+                          </motion.div>
+                          <span className="text-[10px] font-mono text-slate-400 font-bold uppercase">L2</span>
                         </div>
                       </div>
 
-                      <div className="text-center">
-                        <span className="text-xl font-mono font-extrabold text-red-500">{competitorGapPercent}%</span>
-                        <span className="text-[10px] text-slate-400 block font-mono">Competitor Index Advantage</span>
+                      <div className="text-center pt-2">
+                        <motion.span 
+                          className="text-2xl font-mono font-extrabold text-red-500 tracking-tight block"
+                          animate={{ scale: [1, 1.05, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          {competitorGapPercent}%
+                        </motion.span>
+                        <span className="text-[10px] text-slate-400 font-mono font-medium block">Competitor Domain Index Advantage</span>
                       </div>
                     </div>
 
-                    {/* Right: Specific high value targets */}
-                    <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-[0_15px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+                    {/* Right Panel: Intercept list with staggered items and glow effects */}
+                    <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 shadow-[0_32px_64px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden">
+                      <div className="absolute -top-12 -right-12 w-28 h-28 bg-emerald-50 rounded-full blur-xl pointer-events-none" />
+                      
                       <div>
-                        <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-wider block mb-1">Recommendation</span>
-                        <h4 className="text-xs font-display font-extrabold text-brand-navy">High-Value Intercepts</h4>
+                        <span className="text-[10px] font-mono text-emerald-500 font-black uppercase tracking-wider block mb-1">Corda Matchmaker</span>
+                        <h4 className="text-sm font-display font-extrabold text-brand-navy">High-Value Intercept Nodes</h4>
                       </div>
 
-                      <div className="space-y-2 my-3">
-                        <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-[11px]">
-                          <span className="font-mono text-slate-700">techcrunch.com</span>
-                          <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-600 font-mono font-bold text-[9px]">DA 92</span>
-                        </div>
-                        <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-[11px]">
-                          <span className="font-mono text-slate-700">venturebeat.com</span>
-                          <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-600 font-mono font-bold text-[9px]">DA 89</span>
-                        </div>
-                        <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-[11px]">
-                          <span className="font-mono text-slate-700">thenextstack.io</span>
-                          <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-600 font-mono font-bold text-[9px]">DA 83</span>
-                        </div>
+                      <div className="space-y-2.5 my-4">
+                        <motion.div 
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="p-3 bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-xl flex items-center justify-between text-xs transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                            <span className="font-mono text-slate-800 font-semibold">techcrunch.com</span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded-md bg-orange-100 border border-orange-200 text-orange-600 font-mono font-bold text-[9px]">
+                            DA 92 | INDEX GAP
+                          </span>
+                        </motion.div>
+
+                        <motion.div 
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="p-3 bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-xl flex items-center justify-between text-xs transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                            <span className="font-mono text-slate-800 font-semibold">venturebeat.com</span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded-md bg-orange-100 border border-orange-200 text-orange-600 font-mono font-bold text-[9px]">
+                            DA 89 | SEMANTIC GAP
+                          </span>
+                        </motion.div>
+
+                        <motion.div 
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 }}
+                          className="p-3 bg-slate-50 hover:bg-slate-100/70 border border-slate-100 rounded-xl flex items-center justify-between text-xs transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                            <span className="font-mono text-slate-800 font-semibold">thenextstack.io</span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded-md bg-orange-100 border border-orange-200 text-orange-600 font-mono font-bold text-[9px]">
+                            DA 83 | KEYWORD GAP
+                          </span>
+                        </motion.div>
                       </div>
 
-                      <div className="text-xs text-slate-400 italic">
-                        Targeting matching semantic nodes.
+                      <div className="text-[10px] text-slate-400 italic font-mono flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Semantic network mapping complete.
                       </div>
                     </div>
                   </motion.div>
@@ -462,51 +615,96 @@ export default function ExplainerVideo() {
                 {activeStep.id === 'generate' && (
                   <motion.div
                     key="generate"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)]"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-xl bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-8 shadow-[0_32px_64px_rgba(15,23,42,0.04)] relative overflow-hidden"
                   >
                     <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                       <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-orange-500 animate-pulse" />
-                        <span className="text-xs font-mono font-bold text-brand-navy">PR Outreach Pitch Draft Generator</span>
+                        <div className="relative">
+                          <Sparkles className="w-4 h-4 text-orange-500 animate-pulse" />
+                          <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+                        </div>
+                        <span className="text-xs font-mono font-bold text-brand-navy uppercase tracking-wider">Corda PR Synth Module</span>
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-[10px] font-mono text-slate-500 font-bold">
-                        TONE: ANALYTICAL
+                      <span className="px-2.5 py-0.5 rounded-full bg-orange-50 border border-orange-100 text-[10px] font-mono text-orange-600 font-black">
+                        TONE: ANALYTICAL | HIGH RELEVANCE
                       </span>
                     </div>
 
-                    <div className="bg-slate-50 rounded-2xl p-4 font-mono text-[11px] text-slate-600 leading-relaxed border border-slate-100 space-y-3 relative">
-                      {/* Ghostly morphing cursor simulation */}
-                      <div className="absolute right-4 bottom-4 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-orange-500 text-white text-[9px] font-bold tracking-wider">
-                        <Zap className="w-3 h-3 animate-bounce" />
+                    {/* Simulated live typewriter pitch generator with sweeping light mask */}
+                    <div className="bg-slate-50 rounded-2xl p-4 sm:p-5 font-mono text-[11px] sm:text-xs text-slate-600 leading-relaxed border border-slate-100 relative overflow-hidden min-h-[180px]">
+                      
+                      {/* Sweeping metallic glare across the writer */}
+                      <motion.div 
+                        className="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
+                        animate={{ x: ['-100%', '300%'] }}
+                        transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+                      />
+
+                      <div className="absolute right-4 top-4 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-orange-500 text-white text-[9px] font-bold tracking-wider shadow-sm animate-[pulse_1s_infinite]">
+                        <Zap className="w-3 h-3" />
                         <span>SYNTHESIZING...</span>
                       </div>
 
-                      <p className="text-slate-900 font-bold border-b border-slate-200/60 pb-2">
-                        Subject: Data Study: Why modern startups are shifting away from Confluence silos
-                      </p>
-                      
-                      <p>
-                        Hi Editor,
-                      </p>
-                      <p>
-                        We recently finished a software workflow study tracking developer velocity. The data shows engineering hubs experience an average <span className="text-orange-600 font-bold">35% productivity drag</span> due to traditional doc silos.
-                      </p>
-                      <p>
-                        I'd love to write a data-driven guest column about bridging the developer-wiki gap...
-                      </p>
+                      <div className="space-y-3.5 pr-12">
+                        <motion.p 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.4 }}
+                          className="text-slate-900 font-bold border-b border-slate-200/60 pb-2 flex items-center gap-1"
+                        >
+                          <span className="text-slate-400">Subject:</span> Data Study: Why modern startups are shifting away from Confluence silos
+                        </motion.p>
+                        
+                        <motion.p 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.4, delay: 0.3 }}
+                        >
+                          Hi Editor,
+                        </motion.p>
+                        
+                        <motion.p 
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.6 }}
+                        >
+                          We recently finished a software workflow study tracking developer velocity. The data shows engineering hubs experience an average <span className="text-orange-600 font-bold bg-orange-50 px-1 py-0.5 rounded border border-orange-100">35% productivity drag</span> due to traditional document silos.
+                        </motion.p>
+                        
+                        <motion.p 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 1.2 }}
+                          className="text-slate-400 italic"
+                        >
+                          [Analyzing techcrunch.com semantic nodes... drafting anchor links...]
+                        </motion.p>
+                      </div>
                     </div>
 
-                    <div className="mt-4 flex gap-2">
-                      <div className="px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-mono font-bold">
-                        Anchor: "collaborative software wiki"
-                      </div>
-                      <div className="px-3 py-1.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-mono font-bold">
-                        Flow Equity: HIGH
-                      </div>
+                    <div className="mt-4 flex flex-wrap gap-2.5">
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 }}
+                        className="px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-500 text-[10px] font-mono font-bold flex items-center gap-1.5"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <span>Anchor: "collaborative software wiki"</span>
+                      </motion.div>
+                      
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1 }}
+                        className="px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-100/60 text-orange-600 text-[10px] font-mono font-black"
+                      >
+                        Index flow: HIGH QUALITY
+                      </motion.div>
                     </div>
                   </motion.div>
                 )}
@@ -515,46 +713,94 @@ export default function ExplainerVideo() {
                 {activeStep.id === 'launch' && (
                   <motion.div
                     key="launch"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-sm bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)] relative"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-md bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-8 shadow-[0_32px_64px_rgba(15,23,42,0.04)] relative overflow-hidden"
                   >
-                    <div className="flex flex-col items-center text-center space-y-4">
-                      <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center text-orange-500">
-                        <Coins className="w-8 h-8 animate-spin" />
+                    <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-amber-100/40 rounded-full blur-2xl pointer-events-none" />
+
+                    <div className="flex flex-col items-center text-center space-y-5">
+                      
+                      {/* Orbital dispatch visualizer */}
+                      <div className="relative w-28 h-28 flex items-center justify-center">
+                        {/* Rippling circle rings */}
+                        <motion.div 
+                          className="absolute inset-0 rounded-full border-2 border-orange-500/10"
+                          animate={{ scale: [0.8, 1.3], opacity: [1, 0] }}
+                          transition={{ repeat: Infinity, duration: 1.8, ease: "easeOut" }}
+                        />
+                        <motion.div 
+                          className="absolute inset-2 rounded-full border border-orange-500/20"
+                          animate={{ scale: [0.8, 1.2], opacity: [0.8, 0] }}
+                          transition={{ repeat: Infinity, duration: 1.8, delay: 0.6, ease: "easeOut" }}
+                        />
+
+                        {/* Rotating orbital core */}
+                        <motion.div 
+                          className="absolute inset-4 rounded-full border border-dashed border-slate-300"
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+                        />
+
+                        {/* Flying data packets along the ring */}
+                        <motion.div 
+                          className="absolute w-2 h-2 rounded-full bg-orange-500"
+                          animate={{
+                            x: [0, 36, 0, -36, 0],
+                            y: [-36, 0, 36, 0, -36]
+                          }}
+                          transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+                        />
+
+                        {/* Central Wallet/Settlement Icon with elegant spring lift */}
+                        <motion.div 
+                          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-md relative z-10"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <Coins className="w-8 h-8" />
+                        </motion.div>
                       </div>
 
                       <div>
-                        <span className="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-widest block mb-1">
+                        <span className="text-[10px] font-mono text-slate-400 font-extrabold uppercase tracking-widest block mb-1">
                           Consensus Settlement Gateway
                         </span>
-                        <h4 className="text-lg font-display font-extrabold text-brand-navy">
-                          Processing Campaign Order
+                        <h4 className="text-base font-display font-extrabold text-brand-navy">
+                          Ledger Secured & Dispatched
                         </h4>
                       </div>
 
-                      {/* Receipt ledger details */}
-                      <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-2.5 font-mono text-[11px]">
+                      {/* Simulated printed ledger slip details */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-left space-y-2.5 font-mono text-[11px] text-slate-600"
+                      >
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Campaign ID:</span>
-                          <span className="font-bold text-slate-800">C-409A_0x981</span>
+                          <span className="text-slate-400">Transaction hash:</span>
+                          <span className="font-bold text-slate-800">Corda_0x7e2...9a12</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Pitches Enqueued:</span>
-                          <span className="font-bold text-slate-800">45 Active Outlets</span>
+                          <span className="text-slate-400">Smart Contract:</span>
+                          <span className="font-bold text-slate-800">Outbox_Handler_v1</span>
                         </div>
-                        <div className="flex justify-between border-t border-slate-200/60 pt-2">
-                          <span className="text-slate-400">Settlement Ledger:</span>
-                          <span className="font-bold text-orange-600">Secure Wallet Balance</span>
+                        <div className="flex justify-between border-t border-slate-200/60 pt-2 text-xs">
+                          <span className="text-slate-400">Pitches Settled:</span>
+                          <span className="font-black text-orange-600">45 Curated Outlets</span>
                         </div>
-                      </div>
+                      </motion.div>
 
-                      <div className="w-full flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 text-xs font-mono font-bold justify-center">
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span>Ledger Confirmed, Queuing Outbox</span>
-                      </div>
+                      <motion.div 
+                        className="w-full flex items-center gap-2.5 p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 text-xs font-mono font-bold justify-center"
+                        animate={{ scale: [1, 1.02, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span>Secure Ledger Settled, Outbox Released</span>
+                      </motion.div>
                     </div>
                   </motion.div>
                 )}
@@ -563,53 +809,75 @@ export default function ExplainerVideo() {
                 {activeStep.id === 'verify' && (
                   <motion.div
                     key="verify"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.04)]"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-xl bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-8 shadow-[0_32px_64px_rgba(15,23,42,0.04)]"
                   >
                     <div className="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 animate-pulse" />
-                        <span className="text-xs font-mono font-bold text-brand-navy">Corda Web Crawler Verification</span>
+                        <span className="text-xs font-mono font-bold text-brand-navy uppercase tracking-wider">Corda Web Crawler Verification</span>
                       </div>
-                      <span className="text-[10px] font-mono text-emerald-500 font-bold bg-emerald-50 px-2 py-0.5 rounded">
-                        SCANNING LIVE HTML
+                      <span className="text-[10px] font-mono text-emerald-500 font-extrabold bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                        <span>LIVE CRAWLER ACTIVE</span>
                       </span>
                     </div>
 
                     <div className="space-y-4">
-                      {/* Simulating active HTML scan */}
-                      <div className="bg-slate-950 rounded-2xl p-4 font-mono text-[11px] text-slate-300 leading-relaxed border border-slate-800 relative">
-                        <div className="absolute top-2 right-2 text-slate-500 text-[9px]">
-                          Crawled: {crawledPages} pages
+                      {/* Simulating live parsing console */}
+                      <div className="bg-slate-950 rounded-2xl p-4 sm:p-5 font-mono text-[11px] text-slate-300 leading-relaxed border border-slate-800 relative overflow-hidden">
+                        
+                        {/* Scanning green line that slides up and down */}
+                        <motion.div 
+                          className="absolute inset-x-0 h-0.5 bg-emerald-500/30 z-10"
+                          animate={{ top: ['0%', '100%', '0%'] }}
+                          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                        />
+
+                        <div className="flex justify-between text-[10px] text-slate-500 mb-2 pb-1.5 border-b border-slate-800">
+                          <span>Target: techcrunch.com</span>
+                          <span className="text-emerald-400 font-bold">Processed: {crawledPages}/420 nodes</span>
                         </div>
-                        <span className="text-slate-500 block">{'<!-- Scanned on TechCrunch Article ID #91823 -->'}</span>
-                        <p>
+                        
+                        <p className="text-slate-500 text-[10px]">{'<!-- Verifying matching semantic anchor nodes -->'}</p>
+                        <p className="mt-2 text-slate-400">
                           {`<p>When scaling developer environments, engineering leaders often cite `}
-                          <span className="bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 px-1 rounded">
+                          <motion.span 
+                            className="bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 px-1 py-0.5 rounded mx-1 inline-block"
+                            animate={{ scale: [1, 1.05, 1], backgroundColor: ['rgba(16,185,129,0.1)', 'rgba(16,185,129,0.3)', 'rgba(16,185,129,0.1)'] }}
+                            transition={{ repeat: Infinity, duration: 1.5 }}
+                          >
                             {`<a href="https://my-brand-startup.io" rel="dofollow">collaborative software wiki</a>`}
-                          </span>
+                          </motion.span>
                           {` platforms as their primary velocity multiplier.</p>`}
                         </p>
                       </div>
 
-                      {/* Target status feedback */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                      {/* Link attributes validation panel */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-100"
+                      >
                         <div>
-                          <span className="text-[9px] font-mono text-slate-400 block font-bold">CONFIRMED INJECT</span>
-                          <span className="text-xs font-mono font-extrabold text-brand-navy">Rel: dofollow | Index Status: Validated</span>
+                          <span className="text-[9px] font-mono text-emerald-500 block font-black uppercase tracking-widest">PLACED & AUDITED</span>
+                          <span className="text-xs font-mono font-black text-brand-navy flex items-center gap-1.5 mt-0.5">
+                            Rel: dofollow | Index status: VALIDATED
+                          </span>
                         </div>
                         <a 
                           href="#verify" 
                           onClick={(e) => e.preventDefault()}
-                          className="text-[10px] text-orange-600 font-mono font-bold flex items-center gap-1 hover:underline"
+                          className="text-xs text-orange-600 font-mono font-extrabold flex items-center gap-1 hover:underline bg-white border border-slate-150 px-3 py-1.5 rounded-xl shadow-sm hover:bg-slate-50/50"
                         >
-                          <span>View on TechCrunch</span>
-                          <ExternalLink className="w-3 h-3" />
+                          <span>Verify Live Outlet</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
                         </a>
-                      </div>
+                      </motion.div>
                     </div>
                   </motion.div>
                 )}
@@ -618,48 +886,127 @@ export default function ExplainerVideo() {
                 {activeStep.id === 'grow' && (
                   <motion.div
                     key="grow"
-                    initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -15 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full max-w-xl grid grid-cols-1 md:grid-cols-3 gap-4"
+                    exit={{ opacity: 0, scale: 0.94, y: -20 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                    className="w-full max-w-2xl flex flex-col gap-6"
                   >
-                    {/* DA growth */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-[0_15px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden">
-                      <span className="text-[9px] font-mono text-orange-500 font-bold uppercase tracking-wider block">Authority Lift</span>
-                      <div className="my-3">
-                        <span className="text-3xl font-display font-extrabold text-brand-navy">{daScore}</span>
-                        <span className="text-xs font-mono font-bold text-slate-400">/100</span>
-                      </div>
-                      <div className="text-[10px] text-emerald-500 font-mono font-bold flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3" />
-                        <span>DA +540% EXPONENTIAL</span>
-                      </div>
-                    </div>
+                    {/* Glowing background rays */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-100/20 rounded-full blur-3xl pointer-events-none" />
 
-                    {/* Traffic growth */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-[0_15px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden">
-                      <span className="text-[9px] font-mono text-orange-500 font-bold uppercase tracking-wider block">Monthly Traffic</span>
-                      <div className="my-3">
-                        <span className="text-xl font-mono font-bold text-brand-navy">
-                          {organicTraffic.toLocaleString()}
+                    {/* Top Layer: Dynamic Growing line-graph SVG representation */}
+                    <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 shadow-[0_32px_64px_rgba(15,23,42,0.04)] relative overflow-hidden">
+                      <div className="flex justify-between items-center mb-4">
+                        <div>
+                          <span className="text-[10px] font-mono text-emerald-500 font-black uppercase tracking-wider block">Authority trajectory</span>
+                          <h4 className="text-sm font-display font-extrabold text-brand-navy">Search Equity Accumulation</h4>
+                        </div>
+                        <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-md">
+                          Exponential ROI
                         </span>
-                        <span className="text-xs text-slate-400 block font-mono">visits/mo</span>
                       </div>
-                      <div className="text-[10px] text-emerald-500 font-mono font-bold">
-                        +1,190% organic search
+
+                      {/* Smooth animated SVG Line chart */}
+                      <div className="h-28 w-full relative">
+                        <svg className="w-full h-full" viewBox="0 0 100 30" preserveAspectRatio="none">
+                          <defs>
+                            <linearGradient id="chartGlow" x1="0" y1="1" x2="0" y2="0">
+                              <stop offset="0%" stopColor="#10B981" stopOpacity="0"/>
+                              <stop offset="100%" stopColor="#10B981" stopOpacity="0.12"/>
+                            </linearGradient>
+                          </defs>
+
+                          {/* Area block under curve */}
+                          <motion.path 
+                            d="M 0 30 L 0 26 Q 20 25 40 18 T 80 8 T 100 2 L 100 30 Z" 
+                            fill="url(#chartGlow)"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                          />
+
+                          {/* Floating glowing curve */}
+                          <motion.path 
+                            d="M 0 26 Q 20 25 40 18 T 80 8 T 100 2" 
+                            fill="none" 
+                            stroke="#10B981" 
+                            strokeWidth="2"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 1.8, ease: "easeOut" }}
+                          />
+
+                          {/* Glowing tip point */}
+                          <motion.circle 
+                            cx="100" cy="2" r="2" 
+                            fill="#10B981"
+                            animate={{ r: [2, 3.5, 2] }}
+                            transition={{ repeat: Infinity, duration: 1.5 }}
+                          />
+                        </svg>
+                        
+                        <div className="absolute left-0 bottom-0 text-[9px] font-mono text-slate-400 font-bold">Month 1</div>
+                        <div className="absolute right-0 bottom-0 text-[9px] font-mono text-slate-400 font-bold">Month 6</div>
                       </div>
                     </div>
 
-                    {/* ROI growth */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-[0_15px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between relative overflow-hidden">
-                      <span className="text-[9px] font-mono text-orange-500 font-bold uppercase tracking-wider block">Calculated ROI</span>
-                      <div className="my-3">
-                        <span className="text-3xl font-display font-extrabold text-emerald-600">+{roiPercent}%</span>
-                      </div>
-                      <div className="text-[10px] text-slate-500 font-mono">
-                        vs legacy PPC spending
-                      </div>
+                    {/* Bottom Layer: Staggered metric cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      
+                      {/* Metric 1: DA Lift */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="bg-white border border-slate-200/80 rounded-[24px] p-5 shadow-sm flex flex-col justify-between relative overflow-hidden"
+                      >
+                        <span className="text-[9px] font-mono text-orange-500 font-black uppercase tracking-wider block">Authority Lift</span>
+                        <div className="my-3.5 flex items-baseline gap-1">
+                          <span className="text-3.5xl font-display font-black text-brand-navy tracking-tight">{daScore}</span>
+                          <span className="text-xs font-mono font-bold text-slate-400">/100</span>
+                        </div>
+                        <div className="text-[10px] text-emerald-500 font-mono font-bold flex items-center gap-1">
+                          <TrendingUp className="w-3.5 h-3.5" />
+                          <span>DA +540% TRAJECTORY</span>
+                        </div>
+                      </motion.div>
+
+                      {/* Metric 2: Traffic */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="bg-white border border-slate-200/80 rounded-[24px] p-5 shadow-sm flex flex-col justify-between relative overflow-hidden"
+                      >
+                        <span className="text-[9px] font-mono text-orange-500 font-black uppercase tracking-wider block">Monthly Traffic</span>
+                        <div className="my-3.5">
+                          <span className="text-2xl font-mono font-black text-brand-navy">
+                            {organicTraffic.toLocaleString()}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block font-mono font-bold">visits/mo</span>
+                        </div>
+                        <div className="text-[10px] text-emerald-500 font-mono font-bold">
+                          +1,190% organic search
+                        </div>
+                      </motion.div>
+
+                      {/* Metric 3: ROI */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="bg-white border border-slate-200/80 rounded-[24px] p-5 shadow-sm flex flex-col justify-between relative overflow-hidden"
+                      >
+                        <span className="text-[9px] font-mono text-orange-500 font-black uppercase tracking-wider block">Calculated ROI</span>
+                        <div className="my-3.5">
+                          <span className="text-3.5xl font-display font-black text-emerald-600">+{roiPercent}%</span>
+                        </div>
+                        <div className="text-[10px] text-slate-500 font-mono font-bold">
+                          vs organic PPC spends
+                        </div>
+                      </motion.div>
+
                     </div>
                   </motion.div>
                 )}
